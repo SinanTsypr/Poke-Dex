@@ -1,0 +1,63 @@
+﻿@model PokemonViewModel
+
+
+
+<div class="modal fade" id="pokemonModal" tabindex="-1" role="dialog" aria-labelledby="pokemonModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pokemonModalLabel">Pokemon Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container2">
+                    <div class="card">
+                        @if (Model.Types.Count > 0)
+                        {
+                            <div class="card-top" style="background-color: @PokemonColor.GetTypeColor(Model.Types[0].Type2.Name)">
+                                <img src="@Model?.Sprite?.FrontDefault" alt="pokemon sprite" class="card-img-top">
+                            </div>
+                        }
+                        <div class="inner-container">
+                            <div class="stats-head">
+                                <div class="icon-container">
+                                    <img src="/img/@PokemonUtil.GetRandomBall()" class="poke-icon" />"
+                                    <h1 class="pokemon-name card-title"><b>@Model?.Name</b></h1>
+                                </div>
+                                <div class="pokemon-info">
+                                    <h5>Height: @PokemonUtil.GetPokemonHeightInMeters(Model.Height) m</h5>
+                                    <div>
+                                        @foreach (var type in Model.Types)
+                                        {
+                                            <span class="type-badge"
+                                                  style="background-color: @PokemonColor.GetTypeColor(@type.Type2.Name);">@type.Type2.Name</span>
+                                            }
+                                    </div>
+                                    <h5>Weight: @PokemonUtil.GetPokemonWeightInKilograms(Model.Weight) kg</h5>
+                                </div>
+                            </div>
+                            <div class="stats-head">
+                                <div class="icon-container">
+                                    <img src="/img/insignia-3.png" class="poke-icon" />
+                                    <h2>Stats</h2>
+                                </div>
+                                @foreach (var stat in Model?.Stats)
+                                {
+                                    <div class="stat-bar">
+                                        <h5 class="stat">@stat.Stat2.Name: @stat.BaseStat</h5>
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped" role="progressbar"
+                                                 style="width: @stat.BaseStat%; background-color: @PokemonColor.GetStatColor(@stat.Stat2.Name);"
+                                                 aria-valuenow="100" aria-valuemin="0" aria-valuemax="200">
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

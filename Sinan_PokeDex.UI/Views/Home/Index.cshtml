@@ -1,0 +1,48 @@
+﻿@model List<PokemonViewModel>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container">
+    <img src="~/img/Poke-Dex.png" class="app-title">
+    <div class="pokemon-row">
+        @foreach (var pokemon in Model)
+        {
+            <div class="pokemon-card" data-pokemon-id="@pokemon.Id">
+                <img src="@pokemon.Sprite.FrontDefault" alt="">
+                <h4 class="pokemon-name">@pokemon.Name</h4>
+                <div class="type-row">
+                    @foreach (var type in pokemon.Types)
+                    {
+                        <span class="type-badge" style="background-color: @PokemonColor.GetTypeColor(@type.Type2.Name)">@type.Type2.Name</span>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div id="pokemonDetailContainer"></div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.pokemon-card').click(function () {
+                var pokemonId = $(this).data('pokemon-id');
+                $.ajax({
+                    url: '@Url.Action("PokemonDetails", "Home")',
+                    type: 'GET',
+                    data: { id: pokemonId },
+                    success: function (data) {
+                        $('#pokemonDetailContainer').html(data);
+                        $('#pokemonModal').modal('show');
+                    },
+                    error: function () {
+                        alert('An error occurred while loading Pokemon details.');
+                    }
+                });
+            });
+        });
+    </script>
+}
